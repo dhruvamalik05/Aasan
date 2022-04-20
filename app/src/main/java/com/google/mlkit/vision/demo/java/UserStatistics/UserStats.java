@@ -40,6 +40,6 @@ public class UserStats extends AppCompatActivity {
         PostureSparkAdapter adapter = new PostureSparkAdapter(bad_pos_count, x_vals);
         sparkView.setAdapter(adapter);
     }
-
+//canges maddde
 
 }
