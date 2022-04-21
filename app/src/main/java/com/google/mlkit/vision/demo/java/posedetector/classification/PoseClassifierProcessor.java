@@ -59,7 +59,7 @@ public class PoseClassifierProcessor {
     PUSHUPS_CLASS, SQUATS_CLASS
   };
   Interpreter tflite;
-
+  int count1 = 0;
   private final boolean isStreamMode;
 
   private EMASmoothing emaSmoothing;
@@ -174,8 +174,8 @@ public class PoseClassifierProcessor {
 
         if (repsAfter > repsBefore) {
           // Play a fun beep when rep counter updates.
-          ToneGenerator tg = new ToneGenerator(AudioManager.STREAM_NOTIFICATION, 100);
-          tg.startTone(ToneGenerator.TONE_PROP_BEEP);
+//          ToneGenerator tg = new ToneGenerator(AudioManager.STREAM_NOTIFICATION, 100);
+//          tg.startTone(ToneGenerator.TONE_PROP_BEEP);
           lastRepResult = String.format(
               Locale.US, "%s : %d reps", repCounter.getClassName(), repsAfter);
           break;
@@ -198,10 +198,15 @@ public class PoseClassifierProcessor {
         landmarks.add(s.getZ());
       }
       String res = doInference(landmarks);
-      Log.i("Pose: ", res);
+      count1+=1;
+      Log.i("Pose: ", res + " " + count1);
       String maxConfidenceClass = classification.getMaxConfidenceClass();
-      if (classification.getClassConfidence("bad_pos") > 0.8) {
-        maxConfidenceClass = "bad_pos";
+      if (res == "bad" && count1 % 25 == 0) {
+        ToneGenerator tg = new ToneGenerator(AudioManager.STREAM_NOTIFICATION, 100);
+        tg.startTone(ToneGenerator.TONE_PROP_BEEP);
+      }
+      if(count1 % 25 == 0) {
+        count1 = 0;
       }
 //      String maxConfidenceClassResult = String.format(
 //          Locale.US,

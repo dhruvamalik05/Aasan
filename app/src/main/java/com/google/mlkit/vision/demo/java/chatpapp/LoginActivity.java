@@ -11,6 +11,7 @@ import com.google.mlkit.vision.demo.R;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
@@ -69,13 +70,16 @@ public class LoginActivity extends AppCompatActivity {
                     login_password.requestFocus();
                     return;
                 }
-
                 auth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
-
-                        if (task.isSuccessful())
-                            startActivity(new Intent(LoginActivity.this, HomeActivity.class));
+                        Intent i;
+                        if (task.isSuccessful()) {
+                            // Log.i("checking login:", String.valueOf(auth.getUid()));
+                            i = new Intent(LoginActivity.this, HomeActivity.class);
+                            i.putExtra("UserID", auth.getUid());
+                            startActivity(i);
+                        }
                         else {
                             Toast.makeText(LoginActivity.this, "Error in Login", Toast.LENGTH_LONG).show();
                         }

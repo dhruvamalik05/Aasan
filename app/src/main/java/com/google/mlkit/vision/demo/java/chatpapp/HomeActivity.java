@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
@@ -15,6 +16,7 @@ public class HomeActivity extends AppCompatActivity {
 
     Button stat;
     Button live_act;
+    Button prof;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,12 +25,17 @@ public class HomeActivity extends AppCompatActivity {
 
         stat = findViewById(R.id.user_stat);
         live_act = findViewById(R.id.live_preview);
-
+        prof = findViewById(R.id.profile);
+        String id = getIntent().getStringExtra("UserID");
+        Log.i("User ID: ", id);
         stat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //we are diverting to the Register page.
-                startActivity(new Intent(HomeActivity.this, UserStats.class));
+                Intent i3;
+                i3 = new Intent(HomeActivity.this, UserStats.class);
+                i3.putExtra("UserID", id);
+                startActivity(i3);
             };
         });
 
@@ -37,6 +44,16 @@ public class HomeActivity extends AppCompatActivity {
             public void onClick(View v) {
                 //we are diverting to the Register page.
                 startActivity(new Intent(HomeActivity.this, LivePreviewActivity.class));
+            };
+        });
+        prof.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //we are diverting to the Register page.
+                Intent i2;
+                i2 = new Intent(HomeActivity.this, UserProfile.class);
+                i2.putExtra("UserID", id);
+                startActivity(i2);
             };
         });
     }
