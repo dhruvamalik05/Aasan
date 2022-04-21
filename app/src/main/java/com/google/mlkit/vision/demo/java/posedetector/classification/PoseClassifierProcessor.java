@@ -60,6 +60,8 @@ public class PoseClassifierProcessor {
   };
   Interpreter tflite;
   int count1 = 0;
+  public static int bad_pos_count = 0;
+  String last_pose = "good";
   private final boolean isStreamMode;
 
   private EMASmoothing emaSmoothing;
@@ -199,14 +201,18 @@ public class PoseClassifierProcessor {
       }
       String res = doInference(landmarks);
       count1+=1;
-      Log.i("Pose: ", res + " " + count1);
+      Log.i("Pose: ", res + " " + bad_pos_count);
       String maxConfidenceClass = classification.getMaxConfidenceClass();
       if (res == "bad" && count1 % 25 == 0) {
         ToneGenerator tg = new ToneGenerator(AudioManager.STREAM_NOTIFICATION, 100);
         tg.startTone(ToneGenerator.TONE_PROP_BEEP);
+        if (last_pose == "good") {
+          bad_pos_count += 1;
+        }
       }
       if(count1 % 25 == 0) {
         count1 = 0;
+        last_pose = res;
       }
 //      String maxConfidenceClassResult = String.format(
 //          Locale.US,

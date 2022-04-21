@@ -43,7 +43,10 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 //we are diverting to the Register page.
-                startActivity(new Intent(HomeActivity.this, LivePreviewActivity.class));
+                Intent i4;
+                i4 = new Intent(HomeActivity.this, LivePreviewActivity.class);
+                i4.putExtra("UserID", id);
+                startActivity(i4);
             };
         });
         prof.setOnClickListener(new View.OnClickListener() {

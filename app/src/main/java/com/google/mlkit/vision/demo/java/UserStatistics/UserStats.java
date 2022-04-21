@@ -57,7 +57,7 @@ public class UserStats extends AppCompatActivity {
                         }
                         Log.i("Count: ", bad_pos_count_key2.toString());
                         String[] x_vals = {"Analysis 1", "Analysis 2", "Analysis 3", "Analysis 4", "Analysis 5", "Analysis 6", "Analysis 7"};
-                        updateDisplayWithData(bad_pos_count, x_vals);
+                        updateDisplayWithData(bad_pos_count, bad_pos_count_key2);
                     }
                 } else {
                     Toast.makeText(UserStats.this, "Failed to read", Toast.LENGTH_SHORT).show();
@@ -81,7 +81,7 @@ public class UserStats extends AppCompatActivity {
 
     }
 
-    private void updateDisplayWithData(ArrayList<Long> bad_pos_count, String[] x_vals) {
+    private void updateDisplayWithData(ArrayList<Long> bad_pos_count, ArrayList<String> x_vals) {
         PostureSparkAdapter adapter = new PostureSparkAdapter(bad_pos_count, x_vals);
         sparkView.setAdapter(adapter);
     }

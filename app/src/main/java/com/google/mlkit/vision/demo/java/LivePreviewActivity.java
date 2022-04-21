@@ -21,6 +21,8 @@ import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -36,16 +38,23 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.app.ActivityCompat.OnRequestPermissionsResultCallback;
 import androidx.core.content.ContextCompat;
 import com.google.android.gms.common.annotation.KeepName;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.mlkit.common.model.LocalModel;
 import com.google.mlkit.vision.demo.CameraSource;
 import com.google.mlkit.vision.demo.CameraSourcePreview;
 import com.google.mlkit.vision.demo.GraphicOverlay;
 import com.google.mlkit.vision.demo.R;
 import com.google.mlkit.vision.demo.java.barcodescanner.BarcodeScannerProcessor;
+import com.google.mlkit.vision.demo.java.chatpapp.UserProfile;
 import com.google.mlkit.vision.demo.java.facedetector.FaceDetectorProcessor;
 import com.google.mlkit.vision.demo.java.labeldetector.LabelDetectorProcessor;
 import com.google.mlkit.vision.demo.java.objectdetector.ObjectDetectorProcessor;
 import com.google.mlkit.vision.demo.java.posedetector.PoseDetectorProcessor;
+import com.google.mlkit.vision.demo.java.posedetector.classification.PoseClassifierProcessor;
 import com.google.mlkit.vision.demo.java.segmenter.SegmenterProcessor;
 import com.google.mlkit.vision.demo.java.textdetector.TextRecognitionProcessor;
 import com.google.mlkit.vision.demo.preference.PreferenceUtils;
@@ -61,8 +70,11 @@ import com.google.mlkit.vision.text.japanese.JapaneseTextRecognizerOptions;
 import com.google.mlkit.vision.text.korean.KoreanTextRecognizerOptions;
 import com.google.mlkit.vision.text.latin.TextRecognizerOptions;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 /** Live preview demo for ML Kit APIs. */
 @KeepName
@@ -94,6 +106,9 @@ public final class LivePreviewActivity extends AppCompatActivity
   private CameraSourcePreview preview;
   private GraphicOverlay graphicOverlay;
   private String selectedModel = OBJECT_DETECTION;
+  private String id;
+
+  DatabaseReference reference;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -101,6 +116,8 @@ public final class LivePreviewActivity extends AppCompatActivity
     Log.d(TAG, "onCreate");
 
     setContentView(R.layout.activity_vision_live_preview);
+
+    id = getIntent().getStringExtra("UserID");
 
     preview = findViewById(R.id.preview_view);
     if (preview == null) {
@@ -368,6 +385,52 @@ public final class LivePreviewActivity extends AppCompatActivity
     super.onDestroy();
     if (cameraSource != null) {
       cameraSource.release();
+      int counter1 = PoseClassifierProcessor.bad_pos_count;
+      PoseClassifierProcessor.bad_pos_count = 0;
+      if (counter1 != 0) {
+
+//        ArrayList<Long> bad_pos_count = new ArrayList<Long>();
+//        ArrayList<String> bad_pos_count_key2 = new ArrayList<String>();
+        reference = FirebaseDatabase.getInstance().getReference("user");
+        reference.child(id).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+          @Override
+          public void onComplete(@NonNull Task<DataSnapshot> task) {
+            if(task.isSuccessful()) {
+              if(task.getResult().exists()) {
+                DataSnapshot dataSnapshot = task.getResult();
+                DataSnapshot dataSnapshot2 = dataSnapshot.child("bad_pos_count");
+                int temp_var = 0;
+                String currentDate = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date());
+                for (DataSnapshot snapshot : dataSnapshot2.getChildren()){
+                  if (currentDate == snapshot.getKey()) {
+                    Long total = Long.valueOf(counter1) + (Long)snapshot.getValue();
+                    reference.child(id).child("bad_pos_count").child(snapshot.getKey()).setValue(total);
+                    Log.i("done by changing ", currentDate);
+                    temp_var=1;
+//                    bad_pos_count.add(total);
+//                    bad_pos_count_key2.add(snapshot.getKey());
+                    continue;
+                  }
+//                  bad_pos_count.add((Long) snapshot.getValue());
+//                  bad_pos_count_key2.add(snapshot.getKey());
+
+
+                }
+                if (temp_var==0)
+                {
+                  reference.child(id).child("bad_pos_count").child(currentDate).setValue(Long.valueOf(counter1));
+                  Log.i("done by adding new one ", "");
+                }
+
+
+              }
+            } else {
+              Toast.makeText(LivePreviewActivity.this, "Failed to update", Toast.LENGTH_SHORT).show();
+            }
+          }
+        });
+      }
+      Log.i("Destroy", "Completed!!!" + " " + counter1);
     }
   }
 

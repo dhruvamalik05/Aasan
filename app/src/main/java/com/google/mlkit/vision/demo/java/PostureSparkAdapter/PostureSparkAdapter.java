@@ -7,8 +7,8 @@ import java.util.ArrayList;
 public class PostureSparkAdapter extends SparkAdapter {
 
     ArrayList<Long> bad_pos_count;
-    String[] x_vals;
-    public PostureSparkAdapter(ArrayList<Long> bad_pos_count, String[] x_vals) {
+    ArrayList<String> x_vals;
+    public PostureSparkAdapter(ArrayList<Long> bad_pos_count, ArrayList<String> x_vals) {
         this.bad_pos_count = bad_pos_count;
         this.x_vals = x_vals;
     }
@@ -29,6 +29,6 @@ public class PostureSparkAdapter extends SparkAdapter {
     }
     @Override
     public Object getItem(int index) {
-        return "" + x_vals[index] + ": " + bad_pos_count.get(index);
+        return "" + x_vals.get(index) + ": " + bad_pos_count.get(index);
     }
 }
