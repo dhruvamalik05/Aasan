@@ -10,6 +10,7 @@ import android.widget.Button;
 
 import com.google.mlkit.vision.demo.R;
 import com.google.mlkit.vision.demo.java.LivePreviewActivity;
+import com.google.mlkit.vision.demo.java.UnderstandPosture.understandBadPosture;
 import com.google.mlkit.vision.demo.java.UserStatistics.UserStats;
 
 public class HomeActivity extends AppCompatActivity {
@@ -17,6 +18,7 @@ public class HomeActivity extends AppCompatActivity {
     Button stat;
     Button live_act;
     Button prof;
+    Button understanding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,6 +28,7 @@ public class HomeActivity extends AppCompatActivity {
         stat = findViewById(R.id.user_stat);
         live_act = findViewById(R.id.live_preview);
         prof = findViewById(R.id.profile);
+        understanding = findViewById(R.id.understand_pos);
         String id = getIntent().getStringExtra("UserID");
         Log.i("User ID: ", id);
         stat.setOnClickListener(new View.OnClickListener() {
@@ -58,6 +61,14 @@ public class HomeActivity extends AppCompatActivity {
                 i2.putExtra("UserID", id);
                 startActivity(i2);
             };
+        });
+        understanding.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i5;
+                i5 = new Intent(HomeActivity.this, understandBadPosture.class);
+                startActivity(i5);
+            }
         });
     }
 }

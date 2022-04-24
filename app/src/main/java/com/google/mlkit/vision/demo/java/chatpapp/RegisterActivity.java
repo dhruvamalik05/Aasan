@@ -89,7 +89,6 @@ public class RegisterActivity extends AppCompatActivity {
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if(task.isSuccessful())
                             {
-
                                 Toast.makeText(RegisterActivity.this, "User created succcessfully", Toast.LENGTH_SHORT).show();
                                 DatabaseReference reference=database.getReference().child("user").child(auth.getUid());
                                 StorageReference storageReference=storage.getReference().child("upload").child(auth.getUid());

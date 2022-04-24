@@ -3,7 +3,12 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/Rithik/AndroidStudioProjects/SimpleStance1-subhashV1/app/src/main/res/layout/activity_full_screen_pos.xml" value="0.18697916666666667" />
         <entry key="..\:/Users/Rithik/AndroidStudioProjects/SimpleStance1-subhashV1/app/src/main/res/layout/activity_home.xml" value="0.33" />
+        <entry key="..\:/Users/Rithik/AndroidStudioProjects/SimpleStance1-subhashV1/app/src/main/res/layout/activity_login.xml" value="0.18697916666666667" />
+        <entry key="..\:/Users/Rithik/AndroidStudioProjects/SimpleStance1-subhashV1/app/src/main/res/layout/activity_register.xml" value="0.18697916666666667" />
+        <entry key="..\:/Users/Rithik/AndroidStudioProjects/SimpleStance1-subhashV1/app/src/main/res/layout/activity_still_image.xml" value="0.21145833333333333" />
+        <entry key="..\:/Users/Rithik/AndroidStudioProjects/SimpleStance1-subhashV1/app/src/main/res/layout/activity_understand_bad_posture.xml" value="0.16" />
         <entry key="..\:/Users/Rithik/AndroidStudioProjects/SimpleStance1-subhashV1/app/src/main/res/layout/activity_user_profile.xml" value="0.18697916666666667" />
         <entry key="..\:/Users/Rithik/AndroidStudioProjects/SimpleStance1-subhashV1/app/src/main/res/layout/activity_user_stats.xml" value="0.35104166666666664" />
         <entry key="..\:/Users/spath/StudioProjects/SimpleStance/app/src/main/res/layout/activity_home.xml" value="0.2" />

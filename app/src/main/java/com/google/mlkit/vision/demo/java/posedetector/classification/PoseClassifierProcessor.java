@@ -18,28 +18,45 @@ package com.google.mlkit.vision.demo.java.posedetector.classification;
 
 import android.content.Context;
 import android.content.res.AssetFileDescriptor;
+import android.graphics.Bitmap;
 import android.media.AudioManager;
 import android.media.ToneGenerator;
+import android.net.Uri;
 import android.os.Looper;
 import android.util.Log;
+import android.view.View;
+
 import androidx.annotation.WorkerThread;
+
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.common.base.Preconditions;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.google.mlkit.vision.common.PointF3D;
+import com.google.mlkit.vision.demo.R;
+import com.google.mlkit.vision.demo.java.LivePreviewActivity;
+import com.google.mlkit.vision.demo.java.chatpapp.LoginActivity;
 import com.google.mlkit.vision.pose.Pose;
 import com.google.mlkit.vision.pose.PoseLandmark;
 //import org.tensorflow.lite.interpreter;
 
 import org.tensorflow.lite.Interpreter;
 
+import static com.google.mlkit.vision.demo.java.chatpapp.LoginActivity.getScreenShot;
 import static com.google.mlkit.vision.demo.java.posedetector.classification.PoseEmbedding.getPoseEmbedding;
 import static com.google.mlkit.vision.demo.java.posedetector.classification.PoseEmbedding.normalize;
 import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -69,12 +86,17 @@ public class PoseClassifierProcessor {
   private PoseClassifier poseClassifier;
   private String lastRepResult;
   private Context context;
+  FirebaseStorage storeRef;
+  int flag=0;
+  int date1 = -1;
+  int date2 = -1;
 
   @WorkerThread
   public PoseClassifierProcessor(Context context, boolean isStreamMode) {
     Preconditions.checkState(Looper.myLooper() != Looper.getMainLooper());
     this.isStreamMode = isStreamMode;
     this.context = context;
+    storeRef = FirebaseStorage.getInstance();
     if (isStreamMode) {
       emaSmoothing = new EMASmoothing();
       repCounters = new ArrayList<>();
@@ -154,6 +176,9 @@ public class PoseClassifierProcessor {
    */
   @WorkerThread
   public List<String> getPoseResult(Pose pose) {
+    String currentDate = new SimpleDateFormat("HH_mm_ss", Locale.getDefault()).format(new Date());
+    String currentDate2 = new SimpleDateFormat("mm", Locale.getDefault()).format(new Date());
+    StorageReference storageReference=storeRef.getReference().child(LoginActivity.user).child(currentDate);
     Preconditions.checkState(Looper.myLooper() != Looper.getMainLooper());
     List<String> result = new ArrayList<>();
     ClassificationResult classification = poseClassifier.classify(pose);
@@ -203,11 +228,43 @@ public class PoseClassifierProcessor {
       count1+=1;
       Log.i("Pose: ", res + " " + bad_pos_count);
       String maxConfidenceClass = classification.getMaxConfidenceClass();
+      //String currentDate = new SimpleDateFormat("mm", Locale.getDefault()).format(new Date());
+
+      int date1 = Integer.valueOf(currentDate2);
+      if(date1 != date2) {
+        flag = 0;
+      }
+      Log.i("Date", currentDate);
       if (res == "bad" && count1 % 25 == 0) {
         ToneGenerator tg = new ToneGenerator(AudioManager.STREAM_NOTIFICATION, 100);
         tg.startTone(ToneGenerator.TONE_PROP_BEEP);
         if (last_pose == "good") {
           bad_pos_count += 1;
+        }
+        if(Integer.valueOf(currentDate2) % 1 == 0 && flag == 0) {
+          date2 = Integer.valueOf(currentDate2);
+          flag = 1;
+          //getWindow().getDecorView().findViewById(android.R.id.content);
+          View rootView = LivePreviewActivity.rootView;
+          Bitmap bitmap = getScreenShot(rootView);
+          //aasan_img.setImageBitmap(bitmap1);
+          ByteArrayOutputStream baos = new ByteArrayOutputStream();
+          bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+          byte[] data = baos.toByteArray();
+
+          UploadTask uploadTask = storageReference.putBytes(data);
+          uploadTask.addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(Exception exception) {
+              // Handle unsuccessful uploads
+            }
+          }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+              // taskSnapshot.getMetadata() contains file metadata such as size, content-type, and download URL.
+              String downloadUrl = taskSnapshot.toString();
+            }
+          });
         }
       }
       if(count1 % 25 == 0) {

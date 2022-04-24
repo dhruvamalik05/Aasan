@@ -65,13 +65,17 @@ public class UserStats extends AppCompatActivity {
             }
 
         });
-
         sparkView.setScrubListener(new SparkView.OnScrubListener() {
             @Override
             public void onScrubbed(Object value) {
                 // s1.setText(getString(R.string.scrub_format, value));
 //                Log.i("Is this x?", value);
-                s1.setText(value.toString());
+                if(value == null) {
+                    s1.setText("");
+                } else {
+                    s1.setText(value.toString());
+                }
+
             }
         });
 //        reference = FirebaseDatabase.getInstance().getReference("user");

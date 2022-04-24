@@ -101,12 +101,14 @@ public final class LivePreviewActivity extends AppCompatActivity
 
   private static final String TAG = "LivePreviewActivity";
   private static final int PERMISSION_REQUESTS = 1;
+  public static View rootView;
 
   private CameraSource cameraSource = null;
   private CameraSourcePreview preview;
   private GraphicOverlay graphicOverlay;
-  private String selectedModel = OBJECT_DETECTION;
+  private String selectedModel = POSE_DETECTION;
   private String id;
+
 
   DatabaseReference reference;
 
@@ -114,6 +116,7 @@ public final class LivePreviewActivity extends AppCompatActivity
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     Log.d(TAG, "onCreate");
+    rootView = getWindow().getDecorView().findViewById(android.R.id.content);
 
     setContentView(R.layout.activity_vision_live_preview);
 
@@ -128,31 +131,31 @@ public final class LivePreviewActivity extends AppCompatActivity
       Log.d(TAG, "graphicOverlay is null");
     }
 
-    Spinner spinner = findViewById(R.id.spinner);
-    List<String> options = new ArrayList<>();
-    options.add(OBJECT_DETECTION);
-    options.add(OBJECT_DETECTION_CUSTOM);
-    options.add(CUSTOM_AUTOML_OBJECT_DETECTION);
-    options.add(FACE_DETECTION);
-    options.add(BARCODE_SCANNING);
-    options.add(IMAGE_LABELING);
-    options.add(IMAGE_LABELING_CUSTOM);
-    options.add(CUSTOM_AUTOML_LABELING);
-    options.add(POSE_DETECTION);
-    options.add(SELFIE_SEGMENTATION);
-    options.add(TEXT_RECOGNITION_LATIN);
-    options.add(TEXT_RECOGNITION_CHINESE);
-    options.add(TEXT_RECOGNITION_DEVANAGARI);
-    options.add(TEXT_RECOGNITION_JAPANESE);
-    options.add(TEXT_RECOGNITION_KOREAN);
-
-    // Creating adapter for spinner
-    ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(this, R.layout.spinner_style, options);
-    // Drop down layout style - list view with radio button
-    dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-    // attaching data adapter to spinner
-    spinner.setAdapter(dataAdapter);
-    spinner.setOnItemSelectedListener(this);
+//    Spinner spinner = findViewById(R.id.spinner);
+//    List<String> options = new ArrayList<>();
+//    options.add(OBJECT_DETECTION);
+//    options.add(OBJECT_DETECTION_CUSTOM);
+//    options.add(CUSTOM_AUTOML_OBJECT_DETECTION);
+//    options.add(FACE_DETECTION);
+//    options.add(BARCODE_SCANNING);
+//    options.add(IMAGE_LABELING);
+//    options.add(IMAGE_LABELING_CUSTOM);
+//    options.add(CUSTOM_AUTOML_LABELING);
+//    options.add(POSE_DETECTION);
+//    options.add(SELFIE_SEGMENTATION);
+//    options.add(TEXT_RECOGNITION_LATIN);
+//    options.add(TEXT_RECOGNITION_CHINESE);
+//    options.add(TEXT_RECOGNITION_DEVANAGARI);
+//    options.add(TEXT_RECOGNITION_JAPANESE);
+//    options.add(TEXT_RECOGNITION_KOREAN);
+//
+//    // Creating adapter for spinner
+//    ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(this, R.layout.spinner_style, options);
+//    // Drop down layout style - list view with radio button
+//    dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+//    // attaching data adapter to spinner
+//    spinner.setAdapter(dataAdapter);
+//    spinner.setOnItemSelectedListener(this);
 
     ToggleButton facingSwitch = findViewById(R.id.facing_switch);
     facingSwitch.setOnCheckedChangeListener(this);

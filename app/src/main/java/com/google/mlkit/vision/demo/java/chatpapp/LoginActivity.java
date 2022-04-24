@@ -8,14 +8,18 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.mlkit.vision.demo.R;
+import com.google.mlkit.vision.demo.java.UnderstandPosture.PostureGrid;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,6 +30,9 @@ public class LoginActivity extends AppCompatActivity {
     TextView signUpButton;
     Button signInButton;
     EditText login_email, login_password;
+    ImageView aasan_img;
+    public static String user = "";
+
 
 
 
@@ -34,13 +41,14 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-
+        //PostureGrid grid = new PostureGrid();
         auth=FirebaseAuth.getInstance();
         //we are connecting the applcation to the main connection.
         signUpButton=findViewById(R.id.login_register);
         login_email=findViewById(R.id.login_email);
         login_password=findViewById(R.id.login_password);
         signInButton=findViewById(R.id.button_login);
+        aasan_img = findViewById(R.id.aasan_image);
 
         signInButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -76,6 +84,7 @@ public class LoginActivity extends AppCompatActivity {
                         Intent i;
                         if (task.isSuccessful()) {
                             // Log.i("checking login:", String.valueOf(auth.getUid()));
+                            user = email;
                             i = new Intent(LoginActivity.this, HomeActivity.class);
                             i.putExtra("UserID", auth.getUid());
                             startActivity(i);
@@ -94,9 +103,26 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View v) {
                 //we are diverting to the Register page.
                 startActivity(new Intent(LoginActivity.this, RegisterActivity.class));
+//                View rootView = getWindow().getDecorView().findViewById(android.R.id.content);
+//                Bitmap bitmap1 = getScreenShot(rootView);
+//                aasan_img.setImageBitmap(bitmap1);
             };
         });
 
 
+    }
+//    private Bitmap screenShot(View view) {
+//        Bitmap bitmap = Bitmap.createBitmap(view.getWidth(),view.getHeight(), Bitmap.Config.ARGB_8888);
+//        Canvas canvas = new Canvas(bitmap);
+//        view.draw(canvas);
+//        return bitmap;
+//    }
+
+    public static Bitmap getScreenShot(View view) {
+        View screenView = view.getRootView();
+        screenView.setDrawingCacheEnabled(true);
+        Bitmap bitmap = Bitmap.createBitmap(screenView.getDrawingCache());
+        screenView.setDrawingCacheEnabled(false);
+        return bitmap;
     }
 }
