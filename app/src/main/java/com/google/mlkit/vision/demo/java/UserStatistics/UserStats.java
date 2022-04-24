@@ -76,8 +76,8 @@ public class UserStats extends AppCompatActivity {
                     s1.setText("");
                 } else {
                     String[] res = value.toString().split(":");
-                    s1.setText(res[0]);
-                    date1.setText(res[1]);
+                    s1.setText(res[1]);
+                    date1.setText(res[0 ]);
                 }
 
             }

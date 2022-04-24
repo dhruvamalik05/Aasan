@@ -17,27 +17,30 @@
 
 
     <LinearLayout
-        android:layout_width="407dp"
-        android:layout_height="97dp"
-        android:layout_marginTop="150dp"
+        android:layout_width="361dp"
+        android:layout_height="96dp"
+        android:layout_below="@+id/spark1"
         android:background="@drawable/round_border"
         android:orientation="horizontal"
-        tools:layout_editor_absoluteX="0dp"
-        tools:layout_editor_absoluteY="358dp">
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/spark1"
+        app:layout_constraintVertical_bias="0.112">
 
 
         <TextView
             android:id="@+id/date1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
             android:layout_marginStart="28dp"
             android:layout_marginTop="4dp"
-            android:layout_gravity="center_vertical"
             android:layout_marginRight="45dp"
             android:text="Date:"
             android:textColor="#000000"
-            android:textStyle="bold"
             android:textSize="25dp"
+            android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/spark1" />
 
@@ -48,9 +51,9 @@
             android:layout_gravity="center_vertical"
             android:layout_marginTop="4dp"
             android:layout_marginEnd="52dp"
-            android:textSize="18dp"
             android:text="Try dragging across graph to see values"
             android:textColor="#000000"
+            android:textSize="18dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/spark1" />
 
