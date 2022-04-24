@@ -28,6 +28,7 @@ import java.util.Locale;
 public class UserStats extends AppCompatActivity {
     SparkView sparkView;
     TextView s1;
+    TextView date1;
 
     DatabaseReference reference;
     @Override
@@ -36,6 +37,7 @@ public class UserStats extends AppCompatActivity {
         setContentView(R.layout.activity_user_stats);
         sparkView = findViewById(R.id.spark1);
         s1 = findViewById(R.id.s1);
+        date1 = findViewById(R.id.date1);
         String id = getIntent().getStringExtra("UserID");
 
         reference = FirebaseDatabase.getInstance().getReference("user");
@@ -73,7 +75,9 @@ public class UserStats extends AppCompatActivity {
                 if(value == null) {
                     s1.setText("");
                 } else {
-                    s1.setText(value.toString());
+                    String[] res = value.toString().split(":");
+                    s1.setText(res[0]);
+                    date1.setText(res[1]);
                 }
 
             }

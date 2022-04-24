@@ -48,6 +48,7 @@
                 android:textSize="30dp" />
 
             <TextView
+                android:id="@+id/userName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Subhash"
@@ -68,10 +69,10 @@
 
         <TextView
             android:id="@+id/aasan_home"
-            android:layout_width="309dp"
+            android:layout_width="315dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:background="@drawable/round_border"
+            android:background="@drawable/round_button_bg"
             android:elevation="10dp"
             android:padding="15dp"
             android:text="A Good Posture has a \n\t\tcompounding effect!"
@@ -93,8 +94,8 @@
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/live_preview"
-                android:layout_width="123dp"
-                android:layout_height="123dp"
+                android:layout_width="135dp"
+                android:layout_height="135dp"
                 android:layout_margin="15dp"
                 android:clickable="true"
                 app:cardCornerRadius="25dp">
@@ -118,7 +119,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"
                         android:layout_marginTop="10dp"
-                        android:text="Live Preview"
+                        android:text="Monitor Posture"
                         android:textColor="@color/black"
                         android:textSize="18dp"
                         android:textStyle="bold" />
@@ -127,8 +128,8 @@
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/profile"
-                android:layout_width="123dp"
-                android:layout_height="123dp"
+                android:layout_width="135dp"
+                android:layout_height="135dp"
                 android:layout_margin="15dp"
                 android:clickable="true"
                 app:cardCornerRadius="25dp">
@@ -152,7 +153,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"
                         android:layout_marginTop="10dp"
-                        android:text="User Profile"
+                        android:text="Posture Gallery"
                         android:textColor="@color/black"
                         android:textSize="18dp"
                         android:textStyle="bold" />
@@ -169,7 +170,7 @@
             <androidx.cardview.widget.CardView
                 android:id="@+id/user_stat"
                 android:layout_width="223dp"
-                android:layout_height="123dp"
+                android:layout_height="135dp"
                 android:layout_margin="15dp"
                 android:clickable="true"
                 app:cardCornerRadius="25dp">

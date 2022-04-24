@@ -16,7 +16,7 @@ import com.google.mlkit.vision.demo.R;
 
 public class UserProfile extends AppCompatActivity {
     DatabaseReference reference;
-    TextView tv1, tv2, tv3;
+    TextView tv1, tv2, tv3, tv4;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
